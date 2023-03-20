@@ -7,6 +7,11 @@ enum EBackgroundFillMode {
     FILL = 1
 }
 
+enum ERenderer {
+    DEFAULT = 0, // without colors. Only chars - Mostly faster
+    COLORFUL = 1 // With color - chars and background - So slowly
+}
+
 struct VirtualScreen {
     public readonly int width;
     public readonly int height;
@@ -16,16 +21,22 @@ struct VirtualScreen {
     public ConsoleColor windowColor;
     public char backgroundSymbol = '#';
     public char emptySymbol = ' ';
-    public EBackgroundFillMode windowBackgroundFillMode;
+    public EBackgroundFillMode wndBackFillMode;
+    public ERenderer rndMode;
 
-    public VirtualScreen(int _width, int _height) {
+    public VirtualScreen(int _width, int _height, ERenderer _rndMode = ERenderer.DEFAULT) {
         width = _width;
         height = _height;
         buffer = new VirtualPixel[height, width];
         backgroundSymbolColor = ConsoleColor.White;
         backgroundColor = ConsoleColor.Black;
         windowColor = ConsoleColor.White;
-        windowBackgroundFillMode = EBackgroundFillMode.NONE;
+        wndBackFillMode = EBackgroundFillMode.NONE;
+
+        Console.SetWindowSize(width+2, height+2);
+        Console.SetBufferSize(width+2, height+2);
+
+        Console.Beep();
 
         RestoreBuffer();
     }
@@ -65,8 +76,36 @@ struct VirtualScreen {
     }
 
     public void Draw() {
-        for(int i = 0; i < height; i++)
-            Console.Write("\n");
+        Console.Clear();
+        Console.SetCursorPosition(0,0);
+
+        if (rndMode == ERenderer.DEFAULT) {
+            string symbols = "";
+            for(int y = 0; y < height; y++) {
+                for(int x = 0; x < width; x++) {
+                    symbols = symbols + buffer[y, x].symbol;
+                }
+                
+                symbols = symbols + "\n";
+            }
+            Console.Write(symbols);
+        } else if (rndMode == ERenderer.COLORFUL) {
+            for(int y = 0; y < height; y++) {
+                for(int x = 0; x < width; x++) {
+                    Console.BackgroundColor = buffer[y, x].backgroundColor;
+                    Console.ForegroundColor = buffer[y, x].color;
+                    Console.Write(buffer[y, x].symbol);
+                }
+                
+                if (wndBackFillMode == EBackgroundFillMode.NONE)
+                    Console.BackgroundColor = ConsoleColor.Black; 
+                
+                Console.Write("\n");
+            }
+        }
+        /* COLORFUL DRAW
+
+        So, it's very slowly method. Well, i disabled it
 
         for(int y = 0; y < height; y++) {
             for(int x = 0; x < width; x++) {
@@ -75,11 +114,12 @@ struct VirtualScreen {
                 Console.Write(buffer[y, x].symbol);
             }
             
-            if (windowBackgroundFillMode == EBackgroundFillMode.NONE)
+            if (wndBackFillMode == EBackgroundFillMode.NONE)
                 Console.BackgroundColor = ConsoleColor.Black; 
             
             Console.Write("\n");
         }
+        */
     }
 }
 
@@ -121,7 +161,7 @@ class VirtualButton {
     }
     // Рисуется, когда она в фокусе под курсором из VirtualListView
     public void DrawFocusable(VirtualScreen scrCtx) {
-        scrCtx.SetText(y, x, text, ConsoleColor.Black, ConsoleColor.Yellow);
+        scrCtx.SetText(y, x, ">"+text, ConsoleColor.Black, ConsoleColor.Yellow);
     }
     // ...
     public void Click() {

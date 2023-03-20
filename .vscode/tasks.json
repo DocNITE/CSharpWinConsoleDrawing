@@ -2,11 +2,25 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "build",
+            "label": "build_release",
             "command": "dotnet",
             "type": "process",
             "args": [
                 "build",
+                "--configuration", "release", "--no-restore",
+                "${workspaceFolder}/CONSOLE_GAME.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build_debug",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "--no-restore",
                 "${workspaceFolder}/CONSOLE_GAME.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
