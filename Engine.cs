@@ -1,3 +1,5 @@
+
+
 using System;
 
 namespace Engine;
@@ -32,9 +34,12 @@ struct VirtualScreen {
         backgroundColor = ConsoleColor.Black;
         windowColor = ConsoleColor.White;
         wndBackFillMode = EBackgroundFillMode.NONE;
+        rndMode = _rndMode;
 
         Console.SetWindowSize(width+2, height+2);
         Console.SetBufferSize(width+2, height+2);
+
+        Console.CursorVisible = false;
 
         Console.Beep();
 
@@ -76,7 +81,7 @@ struct VirtualScreen {
     }
 
     public void Draw() {
-        Console.Clear();
+        //Console.Clear();
         Console.SetCursorPosition(0,0);
 
         if (rndMode == ERenderer.DEFAULT) {

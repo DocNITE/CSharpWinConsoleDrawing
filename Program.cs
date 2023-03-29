@@ -22,7 +22,7 @@ playSimpleSound(AppDomain.CurrentDomain.BaseDirectory+@"\test.wav");
 */
 // Entry point
 
-VirtualScreen vScreen = new VirtualScreen(80, 25);
+VirtualScreen vScreen = new VirtualScreen(180, 45); //180 45
 // Инициализируем игру перед запуском.
 Game.Manager.Initialize(vScreen);
 // Главный цикл, где все и работает.
@@ -32,10 +32,14 @@ while (true) {
     vScreen.Draw();
     vScreen.RestoreBuffer();
 
-    ConsoleKeyInfo input = Console.ReadKey();
-    var running = Game.Manager.Process(vScreen, input);
+    if (Console.KeyAvailable)
+    {
+        ConsoleKeyInfo input = Console.ReadKey();
+        var running = Game.Manager.Process(vScreen, input);
 
-    if (!running) {
-        return 0;
+        if (!running)
+        {
+            return 0;
+        }
     }
 }
