@@ -1,12 +1,20 @@
 using Engine;
 using Game.Resources;
-
 namespace Game.Scenes;
 
 class SceneGameplay : Scene {
     public VirtualListView itemList;
     private string turnInfo = "";
     private string catStatus = "";
+
+    string logo = "@Doruton@";
+    int kX = 5;
+    int kY = 5;
+    int vecX = 1;
+    int vecY = 1;
+    int timer = 5;
+    int currTime = 0;
+    bool toright = true;
 
     public SceneGameplay() {
         itemList = new VirtualListView(4, 4, 1);
@@ -52,7 +60,7 @@ class SceneGameplay : Scene {
             Cat.Draw(scrCtx);
 
             if (Cat.angryValue >= 100)
-                scrCtx.SetText(4, 4, "Вы избили кошку, и она упала замертво...", ConsoleColor.Red);
+                scrCtx.SetText(4, 4, "Вы избили кошку, и она показав вам фак упала замертво...", ConsoleColor.Red);
             else if (Cat.surpriseValue >= 100)
                 scrCtx.SetText(4, 4, "Кошка вдоволь наигралась и она устала...", ConsoleColor.Magenta);
             else if (Cat.happyValue >= 100)
@@ -68,6 +76,56 @@ class SceneGameplay : Scene {
             scrCtx.SetText(23, 36, "Отвращение - " + Cat.angryValue.ToString() + "%", ConsoleColor.Red);
             Cat.Draw(scrCtx);
         }
+
+        if (currTime >= timer)
+        {
+            //main logic
+            if (vecX >= 1)
+            {
+                kX++;
+            }
+            if (vecY >= 1) 
+            { 
+                kY++;
+            }
+
+            if (vecX <= -1)
+            {
+                kX--;
+            }
+            if (vecY <= -1) 
+            { 
+                kY--; 
+            }
+
+            if (kX >= scrCtx.width-2)
+            {
+                vecX = -1;
+            }
+            if (kY >= scrCtx.height-2)
+            {
+                vecY = -1;
+            }
+
+            if (kX <= 1)
+            {
+                vecX = 1;
+            }
+            if (kY <= 1)
+            {
+                vecY = 1;
+            }
+
+            //maing lovoas dend
+
+            currTime = 0;
+
+        } else
+        {
+            currTime++;
+        }
+        scrCtx.SetText(kY, kX, logo);
+
         itemList.Draw(scrCtx);
     }
     public override void Process(VirtualScreen scrCtx, ConsoleKeyInfo input) {
