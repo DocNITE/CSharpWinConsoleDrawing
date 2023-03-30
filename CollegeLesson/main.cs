@@ -160,7 +160,7 @@ static class Map
     static public List<BaseObject> objs = new List<BaseObject>();
 }
 
-class Program
+class SnakeGameProgram
 {
     static public string[] mapInfo = new string[] {
      "##########",
