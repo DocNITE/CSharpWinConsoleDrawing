@@ -6,6 +6,7 @@ class Scene {
     public Scene() {}
 
     public virtual void Initialize(VirtualScreen scrCtx) {}
-    public virtual void PreProcess(VirtualScreen scrCtx) {}
-    public virtual void Process(VirtualScreen scrCtx, ConsoleKeyInfo input) {}
+    public virtual void Update(VirtualScreen scrCtx) {}
+    public virtual void Render(VirtualScreen scrCtx) {}
+    public virtual void KeyHandle(VirtualScreen scrCtx, ConsoleKeyInfo input) {}
 }

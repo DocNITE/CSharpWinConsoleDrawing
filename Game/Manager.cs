@@ -17,7 +17,7 @@ static class Manager {
 
     //static VirtualListView listMenu = new VirtualListView(4, 4, 1);
     static public EGameState gameState = EGameState.INTRO;
-    static public Scene gameScene = new SceneIntro();
+    static public Scene gameScene = new SceneSnake();
     
     static public void Initialize(VirtualScreen scrCtx) {
         /*
@@ -32,14 +32,17 @@ static class Manager {
         */
     }
     // Используется в основном для рендеринга картинки.
-    static public void PreProcess(VirtualScreen scrCtx) {
+    static public void Update(VirtualScreen scrCtx) {
         //listMenu.Draw(scrCtx);
-        gameScene.PreProcess(scrCtx);
+        gameScene.Update(scrCtx);
+    }
+    static public void Render(VirtualScreen scrCtx) {
+        gameScene.Render(scrCtx);
     }
     // Используется во время нажатия на кнопки
-    static public bool Process(VirtualScreen scrCtx, ConsoleKeyInfo input) {
+    static public bool KeyHandle(VirtualScreen scrCtx, ConsoleKeyInfo input) {
         //listMenu.KeyPressed(input.Key);
-        gameScene.Process(scrCtx, input);
+        gameScene.KeyHandle(scrCtx, input);
 
         if (input.Key == ConsoleKey.Escape || gameState == EGameState.EXIT) {
             return false;

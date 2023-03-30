@@ -27,7 +27,8 @@ VirtualScreen vScreen = new VirtualScreen(180, 45); //180 45
 Game.Manager.Initialize(vScreen);
 // Главный цикл, где все и работает.
 while (true) {
-    Game.Manager.PreProcess(vScreen);
+    Game.Manager.Update(vScreen);
+    Game.Manager.Render(vScreen);
 
     vScreen.Draw();
     vScreen.RestoreBuffer();
@@ -35,7 +36,7 @@ while (true) {
     if (Console.KeyAvailable)
     {
         ConsoleKeyInfo input = Console.ReadKey();
-        var running = Game.Manager.Process(vScreen, input);
+        var running = Game.Manager.KeyHandle(vScreen, input);
 
         if (!running)
         {
