@@ -1,45 +1,41 @@
 ﻿// System namespace
 using System;
 using System.Media;
-// Our engine namespace
-using Engine;
-/*
-void playSimpleSound ( string wavFile )  
-{  
-    SoundPlayer simpleSound = new SoundPlayer ( wavFile );  
-    try  
-    {  
-        simpleSound.SoundLocation = wavFile;  
-        simpleSound.Load ( );  
-        simpleSound.Play (  );  
-    }  
-    catch ( Exception ex )  
-    {  
-        Console.WriteLine ( "Wav File Trouble: {0} \r\n {1} \r\n {2}", wavFile, ex.Message, ex.StackTrace );  
-    }  
-}  
-playSimpleSound(AppDomain.CurrentDomain.BaseDirectory+@"\test.wav");
-*/
-// Entry point
 
-VirtualScreen vScreen = new VirtualScreen(180, 45); //180 45
+//SoundPlayer playSound ( string wavFile )  
+//{  
+//    SoundPlayer simpleSound = new SoundPlayer ( wavFile );  
+//    try  
+//    {  
+//        simpleSound.SoundLocation = wavFile;  
+//        simpleSound.Load();  
+//        simpleSound.Play();  
+//    }  
+//    catch ( Exception ex )  
+//    {  
+//, wavFile, ex.Message, ex.StackTrace );  
+//    }  
+//    return simpleSound;
+//}  
+//playSimpleSound(AppDomain.CurrentDomain.BaseDirectory+@"\test.wav");
+
+// Инициализируем экран.
+Engine.Screen.Initialize(160, 40);
 // Инициализируем игру перед запуском.
-Game.Manager.Initialize(vScreen);
+Game.Controller.Initialize();
 // Главный цикл, где все и работает.
 while (true) {
-    Game.Manager.Update(vScreen);
-    Game.Manager.Render(vScreen);
+    Game.Controller.Update();
+    Game.Controller.Render();
 
-    vScreen.Draw();
-    vScreen.RestoreBuffer();
+    Engine.Screen.Draw();
+    Engine.Screen.RestoreBuffer();
 
-    if (Console.KeyAvailable)
-    {
+    if (Console.KeyAvailable) {
         ConsoleKeyInfo input = Console.ReadKey();
-        var running = Game.Manager.KeyHandle(vScreen, input);
+        var running = Game.Controller.KeyHandle(input);
 
-        if (!running)
-        {
+        if (!running) {
             return 0;
         }
     }
