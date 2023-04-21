@@ -11,6 +11,7 @@ enum ERenderer {
 }
 
 static partial class Screen {
+    public static string Title {get => Console.Title; set => Console.Title = value;}
     public static int Width {get; internal set;}
     public static int Height {get; internal set;}
     public static Pixel[,] Buffer {get; internal set;}
@@ -47,13 +48,14 @@ static partial class Screen {
     public static void RestoreBuffer() {
         for(int y = 0; y < Height; y++) {
             for(int x = 0; x < Width; x++) {
-                if (y == 0 || y == Height-1) {
-                    Buffer[y,x] = new Pixel(backgroundSymbol, BackSymbolColor, WindowColor);
-                } else if (x == 0 || x == Width-1) {
-                    Buffer[y,x] = new Pixel(backgroundSymbol, BackSymbolColor, WindowColor);
-                } else {
-                    Buffer[y,x] = new Pixel(emptySymbol, BackSymbolColor, BackgroundColor);
-                }
+                //if (y == 0 || y == Height-1) {
+                //    Buffer[y,x] = new Pixel(backgroundSymbol, BackSymbolColor, WindowColor);
+                //} else if (x == 0 || x == Width-1) {
+                //    Buffer[y,x] = new Pixel(backgroundSymbol, BackSymbolColor, WindowColor);
+                //} else {
+                //    Buffer[y,x] = new Pixel(emptySymbol, BackSymbolColor, BackgroundColor);
+                //}
+                Buffer[y,x] = new Pixel(emptySymbol, BackSymbolColor, BackgroundColor);
             }
         }
     }

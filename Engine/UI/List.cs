@@ -34,7 +34,7 @@ class ListButton {
     }
 }
 
-class VirtualListView {
+class ListView {
     public List<ListButton> items = new List<ListButton>();
     public int x;
     public int y;
@@ -43,7 +43,7 @@ class VirtualListView {
 
     public ListButton? focused = null;
 
-    public VirtualListView(int _y = 5, int _x = 5, int _padding = 1) {
+    public ListView(int _y = 5, int _x = 5, int _padding = 1) {
         x = _x;
         y = _y;
         padding = _padding;

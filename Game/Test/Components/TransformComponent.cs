@@ -1,0 +1,2 @@
+namespace Game.Test.Components;
+

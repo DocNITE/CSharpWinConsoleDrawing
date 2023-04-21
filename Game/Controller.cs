@@ -5,20 +5,23 @@ using Game.Resources;
 
 namespace Game;
 
-enum EGameState: byte {
-    START = 0,
-    GAMEPLAY = 1,
-    ENDING = 2,
-    EXIT = 16
+enum GameLifeStage: byte {
+    Start,
+    Initializing,
+    Running,
+    Exit
 }
 
 // Main game loop controller
 static class Controller {
 
-    static public EGameState State = EGameState.START;
+    static public GameLifeStage LifeStage = GameLifeStage.Start;
     static public Scene? Scene;
     
     static public void Initialize() {
+        // test
+        Scene = new SceneRenderingTest();
+        Scene.Initialize(); // Why not?
     }
     // Main game process - physics, movement and some.
     static public void Update() {
@@ -29,13 +32,11 @@ static class Controller {
         Scene?.Render();
     }
     // Input listeneer
-    static public bool KeyHandle(ConsoleKeyInfo input) {
+    static public void KeyHandle(ConsoleKeyInfo input) {
         Scene?.KeyHandle(input);
 
-        if (input.Key == ConsoleKey.Escape || State == EGameState.EXIT) {
-            return false;
+        if (input.Key == ConsoleKey.Escape) {
+            LifeStage = GameLifeStage.Exit;
         }
-
-        return true;
     }
 }

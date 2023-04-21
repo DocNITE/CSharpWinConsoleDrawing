@@ -1,42 +1,23 @@
-﻿// System namespace
-using System;
-using System.Media;
-
-//SoundPlayer playSound ( string wavFile )  
-//{  
-//    SoundPlayer simpleSound = new SoundPlayer ( wavFile );  
-//    try  
-//    {  
-//        simpleSound.SoundLocation = wavFile;  
-//        simpleSound.Load();  
-//        simpleSound.Play();  
-//    }  
-//    catch ( Exception ex )  
-//    {  
-//, wavFile, ex.Message, ex.StackTrace );  
-//    }  
-//    return simpleSound;
-//}  
-//playSimpleSound(AppDomain.CurrentDomain.BaseDirectory+@"\test.wav");
-
-// Инициализируем экран.
+﻿// Initialize screen
 Engine.Screen.Initialize(160, 40);
-// Инициализируем игру перед запуском.
+// Initialize game
 Game.Controller.Initialize();
-// Главный цикл, где все и работает.
+// Main loop
 while (true) {
+    // Game logic
     Game.Controller.Update();
     Game.Controller.Render();
-
+    // Rendering
     Engine.Screen.Draw();
     Engine.Screen.RestoreBuffer();
-
+    // Input
     if (Console.KeyAvailable) {
         ConsoleKeyInfo input = Console.ReadKey();
-        var running = Game.Controller.KeyHandle(input);
-
-        if (!running) {
-            return 0;
-        }
+        Game.Controller.KeyHandle(input);
+    }
+    // Check if we wanna exit from game
+    var exit = Game.Controller.LifeStage == Game.GameLifeStage.Exit;
+    if (exit) {
+        return 0;
     }
 }
