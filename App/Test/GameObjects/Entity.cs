@@ -1,6 +1,8 @@
-namespace Game.Test;
+using App.Test.Interfaces;
 
-class Entity: ICloneable<Entity> {
+namespace App.Test.GameObjects;
+
+public class Entity: ICloneable<Entity> {
     public Entity()
     {
 

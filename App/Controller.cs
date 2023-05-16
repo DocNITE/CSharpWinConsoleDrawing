@@ -1,11 +1,12 @@
 using System;
 using Engine;
-using Game.Scenes;
-using Game.Resources;
+using App.Scenes;
+using App.Resources;
+using App.Scenes;
 
-namespace Game;
+namespace App;
 
-enum GameLifeStage: byte {
+enum LifeStage: byte {
     Start,
     Initializing,
     Running,
@@ -15,7 +16,7 @@ enum GameLifeStage: byte {
 // Main game loop controller
 static class Controller {
 
-    static public GameLifeStage LifeStage = GameLifeStage.Start;
+    static public LifeStage LifeStage = LifeStage.Start;
     static public Scene? Scene;
     
     static public void Initialize() {
@@ -36,7 +37,7 @@ static class Controller {
         Scene?.KeyHandle(input);
 
         if (input.Key == ConsoleKey.Escape) {
-            LifeStage = GameLifeStage.Exit;
+            LifeStage = LifeStage.Exit;
         }
     }
 }

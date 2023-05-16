@@ -1,4 +1,4 @@
-namespace Game.Scenes;
+namespace App.Scenes;
 
 class Scene {
     public Scene() {}

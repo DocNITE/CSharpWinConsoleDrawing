@@ -1,3 +1,5 @@
+using App.Test.Interfaces;
+
 class Vector2: ICloneable<Vector2> {
     public float X {get; set;}
     public float Y {get; set;}
