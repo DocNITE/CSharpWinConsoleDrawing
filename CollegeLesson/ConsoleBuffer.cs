@@ -1,3 +1,4 @@
+/*
 using System;
 using System.IO;
 using Microsoft.Win32.SafeHandles;
@@ -208,3 +209,4 @@ class ConsoleBuffer {
 				new NativeMethods.Coord() { X = 0, Y = 0 }, ref rect);
 		}
 	}
+*/

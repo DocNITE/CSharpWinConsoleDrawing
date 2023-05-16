@@ -46,7 +46,7 @@ https://www.asciiart.eu/animals/cats
 инструмент для его редактирования. Но на первое время пойдет.
 */
 
-namespace Game.Resources;
+namespace App.Resources;
 
 static class Resource {
   static public string[] TextureCatHappy = new string[] {
