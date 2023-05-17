@@ -1,4 +1,6 @@
-# CONSOLE_GAME
-Небольшой презентационный проект для учебы. На что-то серьезное не тянет
-Как понятно из названия - игра сделанная в консоли
+# CSharpWinConsoleDrawing
+Well, it's small project, made it for my college. 
+You can use it for console apps: for retro-style games, simple table apps and something.
+
+There is only support early 11's windows versions.
 

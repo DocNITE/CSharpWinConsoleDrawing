@@ -1,5 +1,36 @@
 using System;
 using Engine;
+
+namespace App;
+
+public enum LifeStage: byte {
+    Start,
+    Initializing,
+    Running,
+    Exit
+}
+
+public class IControllerMethods {
+    public static void Initialize() {}
+    public static void Update() {}
+    public static void Render() {}
+    public static void KeyHandle(ConsoleKeyInfo input) {}
+    public static void Dispose() {}
+}
+
+// Main game loop controller
+public partial class Controller : IControllerMethods {
+
+    public static LifeStage LifeStage = LifeStage.Start;
+
+    // So, when you import submodule in your project, next -
+    // you need to implement second code into your app entry point file 
+}
+
+/* Controller.EntryPoint.cs
+
+using System;
+using Engine;
 using App.Scenes;
 using App.Resources;
 
@@ -30,3 +61,4 @@ public partial class Controller {
         }
     }
 }
+*/
