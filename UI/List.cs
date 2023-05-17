@@ -53,10 +53,10 @@ class ListView {
         visible = toggle;
 
         if (visible)
-            Update();
+            Restore();
     }
 
-    public void Update() {
+    public void Restore() {
         if (items.Count < 1) return;
 
         focused = items[0];
