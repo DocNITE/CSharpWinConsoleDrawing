@@ -1,6 +1,6 @@
 namespace App.Scenes;
 
-class Scene {
+public class Scene {
     public Scene() {}
 
     public virtual void Initialize() {}

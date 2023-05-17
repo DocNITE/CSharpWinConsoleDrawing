@@ -8,7 +8,7 @@ namespace App.Scenes;
 /// <summary>
 /// debug test scene for some engine's shit
 /// </summary>
-class SceneRenderingTest: Scene {
+public class SceneRenderingTest: Scene {
     public SceneRenderingTest() {}
     IEnumerable<Type> atype;
 

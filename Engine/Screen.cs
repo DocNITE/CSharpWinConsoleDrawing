@@ -1,16 +1,16 @@
 namespace Engine;
 
-enum EBackgroundFillMode {
+public enum EBackgroundFillMode {
     NONE = 0,
     FILL = 1
 }
 
-enum ERenderer {
+public enum ERenderer {
     DEFAULT = 0, // without Colors. Only chars - Mostly faster
     ColorFUL = 1 // With Color - chars and background - So slowly
 }
 
-static partial class Screen {
+public partial class Screen {
     public static string Title {get => Console.Title; set => Console.Title = value;}
     public static int Width {get; internal set;}
     public static int Height {get; internal set;}
@@ -90,7 +90,7 @@ static partial class Screen {
     }
 }
 
-struct Pixel {
+public struct Pixel {
     public char Symbol;
     public ConsoleColor Color;
     public ConsoleColor BackgroundColor;

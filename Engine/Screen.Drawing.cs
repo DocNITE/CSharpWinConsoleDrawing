@@ -1,6 +1,6 @@
 namespace Engine;
 
-static partial class Screen {
+public partial class Screen {
     /// <summary>
     /// Drawing with text line
     /// </summary>
@@ -43,7 +43,7 @@ static partial class Screen {
     }
 }
 
-struct Texture {
+public struct Texture {
     public int Width {get;}
     public int Height {get;}
     public Pixel[,] Buffer {get;}
