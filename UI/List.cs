@@ -24,7 +24,7 @@ class ListButton {
     }
     // Рисуется, когда она в фокусе под курсором из VirtualListView
     public void DrawFocusable() {
-        Screen.SetText(y, x, ">"+text, ConsoleColor.Black, ConsoleColor.Yellow);
+        Screen.SetText(y, x, "-> "+text, ConsoleColor.Black, ConsoleColor.Yellow);
     }
     // ...
     public void Click() {
