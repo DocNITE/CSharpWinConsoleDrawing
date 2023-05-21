@@ -9,7 +9,7 @@ public partial class Font {
 			return Marshal.GetLastWin32Error();
 		}
 
-		Screen.CONSOLE_FONT_INFO_EX cfi = new Screen.CONSOLE_FONT_INFO_EX();
+		Kernel32.CONSOLE_FONT_INFO_EX cfi = new Kernel32.CONSOLE_FONT_INFO_EX();
 		cfi.cbSize = (uint)Marshal.SizeOf(cfi);
 		cfi.nFont = 0;
 
@@ -20,7 +20,7 @@ public partial class Font {
 		if (sizeX < 4 || sizeY < 4) cfi.FaceName = "Consolas";
 		else cfi.FaceName = "Terminal";
 
-		Screen.SetCurrentConsoleFontEx(h, false, ref cfi);
+		Kernel32.SetCurrentConsoleFontEx(h, false, ref cfi);
 		return 0;
 	}
 }

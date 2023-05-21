@@ -10,10 +10,9 @@ namespace Engine;
 ///  https://github.com/ollelogdahl/ConsoleGameEngine
 ///  Thank you, you realy helped me!
 /// </summary>
-public partial class Screen {
-    static SafeFileHandle sf_handler = CreateFile("CONOUT$", 0x40000000, 2, IntPtr.Zero, FileMode.Open, 0, IntPtr.Zero);
 
-    private const int MF_BYCOMMAND = 0x00000000;
+public partial class Kernel32 {
+    public const int MF_BYCOMMAND = 0x00000000;
     public const int SC_CLOSE = 0xF060;
     public const int SC_MINIMIZE = 0xF020;
     public const int SC_MAXIMIZE = 0xF030;
@@ -23,10 +22,10 @@ public partial class Screen {
     public static extern int DeleteMenu(IntPtr hMenu, int nPosition, int wFlags);
 
     [DllImport("user32.dll")]
-    private static extern IntPtr GetSystemMenu(IntPtr hWnd, bool bRevert);
+    public static extern IntPtr GetSystemMenu(IntPtr hWnd, bool bRevert);
 
     [DllImport("kernel32.dll", ExactSpelling = true)]
-    private static extern IntPtr GetConsoleWindow();
+    public static extern IntPtr GetConsoleWindow();
     [DllImport("user32.dll", SetLastError = true)]
 	public static extern short GetAsyncKeyState(Int32 vKey);
 	[DllImport("user32.dll", SetLastError = true)]
@@ -55,7 +54,7 @@ public partial class Screen {
 	public static extern IntPtr GetStdHandle(int nStdHandle);
 
     [DllImport("Kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
-    static extern SafeFileHandle CreateFile(
+    public static extern SafeFileHandle CreateFile(
         string fileName,
         [MarshalAs(UnmanagedType.U4)] uint fileAccess,
         [MarshalAs(UnmanagedType.U4)] uint fileShare,
@@ -65,7 +64,7 @@ public partial class Screen {
         IntPtr template);
 
     [DllImport("kernel32.dll", SetLastError = true)]
-    static extern bool WriteConsoleOutputW(
+    public static extern bool WriteConsoleOutputW(
       SafeFileHandle hConsoleOutput,
       CharInfo[] lpBuffer,
       Coord dwBufferSize,

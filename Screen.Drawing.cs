@@ -13,7 +13,7 @@ public partial class Screen {
                         ConsoleColor color = ConsoleColor.White, 
                         ConsoleColor backgroundColor = ConsoleColor.Black) {
         for(int ctn = 0; ctn < message.Length; ctn++) {
-            if (x+ctn < 0 || x+ctn >= Width) 
+            if (x+ctn < 0 || x+ctn >= WindowSize.X) 
                 break;
 
             SetPixel(y, x+ctn, message[ctn], color, backgroundColor);

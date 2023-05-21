@@ -12,72 +12,72 @@ public class Pallete {
 		}
 
 		private static int SetColor(int color, uint r, uint g, uint b) {
-			Screen.CONSOLE_SCREEN_BUFFER_INFO_EX csbe = new Screen.CONSOLE_SCREEN_BUFFER_INFO_EX();
+			Kernel32.CONSOLE_SCREEN_BUFFER_INFO_EX csbe = new Kernel32.CONSOLE_SCREEN_BUFFER_INFO_EX();
 			csbe.cbSize = Marshal.SizeOf(csbe);
-			IntPtr hConsoleOutput = Screen.GetStdHandle(-11);
+			IntPtr hConsoleOutput = Kernel32.GetStdHandle(-11);
 			if (hConsoleOutput == new IntPtr(-1)) {
 				return Marshal.GetLastWin32Error();
 			}
-			bool brc = Screen.GetConsoleScreenBufferInfoEx(hConsoleOutput, ref csbe);
+			bool brc = Kernel32.GetConsoleScreenBufferInfoEx(hConsoleOutput, ref csbe);
 			if (!brc) {
 				return Marshal.GetLastWin32Error();
 			}
 
 			switch (color) {
 				case 0:
-					csbe.black = new Screen.ColorRef(r, g, b);
+					csbe.black = new Kernel32.ColorRef(r, g, b);
 					break;
 				case 1:
-					csbe.darkBlue = new Screen.ColorRef(r, g, b);
+					csbe.darkBlue = new Kernel32.ColorRef(r, g, b);
 					break;
 				case 2:
-					csbe.darkGreen = new Screen.ColorRef(r, g, b);
+					csbe.darkGreen = new Kernel32.ColorRef(r, g, b);
 					break;
 				case 3:
-					csbe.darkCyan = new Screen.ColorRef(r, g, b);
+					csbe.darkCyan = new Kernel32.ColorRef(r, g, b);
 					break;
 				case 4:
-					csbe.darkRed = new Screen.ColorRef(r, g, b);
+					csbe.darkRed = new Kernel32.ColorRef(r, g, b);
 					break;
 				case 5:
-					csbe.darkMagenta = new Screen.ColorRef(r, g, b);
+					csbe.darkMagenta = new Kernel32.ColorRef(r, g, b);
 					break;
 				case 6:
-					csbe.darkYellow = new Screen.ColorRef(r, g, b);
+					csbe.darkYellow = new Kernel32.ColorRef(r, g, b);
 					break;
 				case 7:
-					csbe.gray = new Screen.ColorRef(r, g, b);
+					csbe.gray = new Kernel32.ColorRef(r, g, b);
 					break;
 				case 8:
-					csbe.darkGray = new Screen.ColorRef(r, g, b);
+					csbe.darkGray = new Kernel32.ColorRef(r, g, b);
 					break;
 				case 9:
-					csbe.blue = new Screen.ColorRef(r, g, b);
+					csbe.blue = new Kernel32.ColorRef(r, g, b);
 					break;
 				case 10:
-					csbe.green = new Screen.ColorRef(r, g, b);
+					csbe.green = new Kernel32.ColorRef(r, g, b);
 					break;
 				case 11:
-					csbe.cyan = new Screen.ColorRef(r, g, b);
+					csbe.cyan = new Kernel32.ColorRef(r, g, b);
 					break;
 				case 12:
-					csbe.red = new Screen.ColorRef(r, g, b);
+					csbe.red = new Kernel32.ColorRef(r, g, b);
 					break;
 				case 13:
-					csbe.magenta = new Screen.ColorRef(r, g, b);
+					csbe.magenta = new Kernel32.ColorRef(r, g, b);
 					break;
 				case 14:
-					csbe.yellow = new Screen.ColorRef(r, g, b);
+					csbe.yellow = new Kernel32.ColorRef(r, g, b);
 					break;
 				case 15:
-					csbe.white = new Screen.ColorRef(r, g, b);
+					csbe.white = new Kernel32.ColorRef(r, g, b);
 					break;
 			}
 
 			++csbe.srWindow.Bottom;
 			++csbe.srWindow.Right;
 
-			brc = Screen.SetConsoleScreenBufferInfoEx(hConsoleOutput, ref csbe);
+			brc = Kernel32.SetConsoleScreenBufferInfoEx(hConsoleOutput, ref csbe);
 			if (!brc) {
 				return Marshal.GetLastWin32Error();
 			}

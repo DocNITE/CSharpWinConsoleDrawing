@@ -1,4 +1,5 @@
 using System;
+using Engine;
 
 namespace Engine.UI;
 
@@ -73,11 +74,11 @@ class ListView {
 
         if (focused != null)
         {
-            if (Screen.GetKey(ConsoleKey.UpArrow))
+            if (Input.GetKey(ConsoleKey.UpArrow))
                 ScrollUp();
-            else if (Screen.GetKey(ConsoleKey.DownArrow))
+            else if (Input.GetKey(ConsoleKey.DownArrow))
                 ScrollDown();
-            else if (Screen.GetKey(ConsoleKey.Enter))
+            else if (Input.GetKey(ConsoleKey.Enter))
                 focused.Click();   
         }
 

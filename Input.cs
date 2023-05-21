@@ -1,12 +1,12 @@
 using System.Drawing;
+using static Engine.Kernel32;
 
 namespace Engine;
 
-public partial class Screen {
-    private static readonly IntPtr stdInputHandle = GetStdHandle(-10);
-	private static readonly IntPtr stdOutputHandle = GetStdHandle(-11);
-	private static readonly IntPtr stdErrorHandle = GetStdHandle(-12);
-	private static readonly IntPtr consoleHandle = GetConsoleWindow();
+public partial class Input {
+    public static readonly IntPtr stdInputHandle = GetStdHandle(-10);
+	public static readonly IntPtr stdOutputHandle = GetStdHandle(-11);
+	public static readonly IntPtr stdErrorHandle = GetStdHandle(-12);
 
     /// <summary>Checks to see if the console is in focus </summary>
 	/// <returns>True if Console is in focus</returns>
@@ -72,29 +72,30 @@ public partial class Screen {
 		return (s & 0x8000) > 0 && ConsoleFocused();
 	}
 
+    // UNCOMPLINTED!!!!!!!!!!!!!!!
 	/// <summary> Gets the mouse position. </summary>
 	/// <returns>The mouse's position in character-space.</returns>
 	/// <exception cref="Exception"/>
-	//public static Point GetMousePos() {
-	//	Rect r = new Rect();
-	//	GetWindowRect(GetConsoleWindow(), ref r);
-//
-	//	if (GetCursorPos(out Point p)) {
-	//		Point point = new Point();
-	//		if (!IsBorderless) {
-	//			p.Y -= 29;
-	//			point = new Point(
-	//				(int)Math.Floor(((p.X - r.Left) / (float)FontSize.X) - 0.5f),
-	//				(int)Math.Floor(((p.Y - r.Top) / (float)FontSize.Y))
-	//			);
-	//		} else {
-	//			point = new Point(
-	//				(int)Math.Floor(((p.X - r.Left) / (float)FontSize.X)),
-	//				(int)Math.Floor(((p.Y - r.Top) / (float)FontSize.Y))
-	//			);
-	//		}
-	//		return new Point(Utility.Clamp(point.X, 0, WindowSize.X - 1), Utility.Clamp(point.Y, 0, WindowSize.Y - 1));
-	//	}
-	//	throw new Exception();
-	//}
+	public static Point GetMousePos() {
+		Rect r = new Rect();
+		GetWindowRect(GetConsoleWindow(), ref r);
+
+		if (GetCursorPos(out Point p)) {
+			Point point = new Point();
+			if (!Screen.IsBorderless) {
+				p.Y -= 29*2;
+				point = new Point(
+					(int)Math.Floor(((p.X - r.Left) / (float)Screen.FontSize.X)),
+					(int)Math.Floor(((p.Y - r.Top) / (float)Screen.FontSize.Y))
+				);
+			} else {
+				point = new Point(
+					(int)Math.Floor(((p.X - r.Left) / (float)Screen.FontSize.X)),
+					(int)Math.Floor(((p.Y - r.Top) / (float)Screen.FontSize.Y))
+				);
+			}
+			return new Point(Utility.Clamp(point.X, 0, Screen.WindowSize.X - 1), Utility.Clamp(point.Y, 0, Screen.WindowSize.Y - 1));
+		}
+		throw new Exception();
+	}
 }

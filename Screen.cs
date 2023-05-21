@@ -1,3 +1,5 @@
+using System.Drawing;
+
 namespace Engine;
 
 public enum EBackgroundFillMode {
@@ -11,10 +13,13 @@ public enum ERenderer {
 }
 
 public partial class Screen {
+    private static readonly IntPtr consoleHandle = Kernel32.GetConsoleWindow();
+
     public static string Title {get => Console.Title; set => Console.Title = value;}
-    public static int Width {get; internal set;}
-    public static int Height {get; internal set;}
+    public static Point WindowSize {get; internal set;}
+    public static Point FontSize {get; internal set;}
     public static Pixel[] Buffer {get; internal set;}
+    public static Buffer ConsoleBuffer {get; internal set;}
     public static ConsoleColor BackSymbolColor;
     public static ConsoleColor BackgroundColor;
     public static ConsoleColor WindowColor;
@@ -24,88 +29,95 @@ public partial class Screen {
     private static ERenderer rndMode;
     public static bool IsBorderless = false;
 
-    public static void Initialize(int _Width, int _Height, string _title = "ConsoleEngine", ERenderer _rndMode = ERenderer.DEFAULT) {
-        Width = _Width;
-        Height = _Height;
-        Buffer = new Pixel[Height * Width];
+    public static void Initialize(int _Width, int _Height, int _fontWidth, int _fontHeight, string _title = "ConsoleEngine", ERenderer _rndMode = ERenderer.DEFAULT) {
+        if (_Width < 1 || _Height < 1) throw new ArgumentOutOfRangeException();
+        if (_fontWidth < 1 || _fontHeight < 1) throw new ArgumentOutOfRangeException();
+
+        WindowSize = new(_Width, _Height);
+        FontSize = new(_fontWidth, _fontHeight);
+        Buffer = new Pixel[WindowSize.Y * WindowSize.X];
         BackSymbolColor = ConsoleColor.White;
         BackgroundColor = ConsoleColor.Black;
         WindowColor = ConsoleColor.White;
         wndBackFillMode = EBackgroundFillMode.NONE;
         rndMode = _rndMode;
 
-        //Console.SetWindowSize(Width, Height);
-        Console.SetBufferSize(160, 90);
-        SetWindowPos(consoleHandle, 5, 20, 0, 1300, 700, 0x0040);
+        Console.SetWindowSize(WindowSize.X, WindowSize.Y);
+        Console.SetBufferSize(WindowSize.X, WindowSize.Y);
+        //SetWindowPos(consoleHandle, 5, 20, 0, WindowSize.X * FontSize.X, WindowSize.Y * FontSize.Y, 0x0040);
+        Console.SetWindowPosition(0, 0);
 
         Console.Title = _title;
         Console.CursorVisible = false;
         // https://social.msdn.microsoft.com/Forums/vstudio/en-US/1aa43c6c-71b9-42d4-aa00-60058a85f0eb/c-console-window-disable-resize?forum=csharpgeneral
         // Disable some commands
         IntPtr handle = consoleHandle;
-        IntPtr sysMenu = GetSystemMenu(handle, false);
+        IntPtr sysMenu = Kernel32.GetSystemMenu(handle, false);
         if (handle != IntPtr.Zero)
         {
-            //DeleteMenu(sysMenu, SC_CLOSE, MF_BYCOMMAND);
-            //DeleteMenu(sysMenu, SC_MINIMIZE, MF_BYCOMMAND);
-            //DeleteMenu(sysMenu, SC_MAXIMIZE, MF_BYCOMMAND);
-            //DeleteMenu(sysMenu, SC_SIZE, MF_BYCOMMAND);
+            Kernel32.DeleteMenu(sysMenu, Kernel32.SC_CLOSE, Kernel32.MF_BYCOMMAND);
+            Kernel32.DeleteMenu(sysMenu, Kernel32.SC_MINIMIZE, Kernel32.MF_BYCOMMAND);
+            Kernel32.DeleteMenu(sysMenu, Kernel32.SC_MAXIMIZE, Kernel32.MF_BYCOMMAND);
+            Kernel32.DeleteMenu(sysMenu, Kernel32.SC_SIZE, Kernel32.MF_BYCOMMAND);
         }
         // ende
 
-        SetConsoleMode(stdInputHandle, 0x0080);
-		Font.SetFont(stdOutputHandle, (short)10, (short)10);
+        ConsoleBuffer = new Buffer(WindowSize.X, WindowSize.Y);
+        Kernel32.SetConsoleMode(Input.stdInputHandle, 0x0080);
+		Font.SetFont(Input.stdOutputHandle, (short)FontSize.X, (short)FontSize.Y);
 
         RestoreBuffer();
     }
 
     public static void RestoreBuffer() {
-        for(int y = 0; y < Height; y++) {
-            for(int x = 0; x < Width; x++) {
-                //if (y == 0 || y == Height-1) {
-                //    Buffer[y,x] = new Pixel(backgroundSymbol, BackSymbolColor, WindowColor);
-                //} else if (x == 0 || x == Width-1) {
-                //    Buffer[y,x] = new Pixel(backgroundSymbol, BackSymbolColor, WindowColor);
-                //} else {
-                //    Buffer[y,x] = new Pixel(emptySymbol, BackSymbolColor, BackgroundColor);
-                //}
+        for(int y = 0; y < WindowSize.Y; y++) {
+            for(int x = 0; x < WindowSize.X; x++) {
                 Buffer[GetPosition(y, x)] = new Pixel(emptySymbol, BackSymbolColor, BackgroundColor);
             }
         }
     }
 
     public static void Draw() {
-        Console.SetCursorPosition(0,0);
         // https://stackoverflow.com/questions/2754518/how-can-i-write-fast-colored-output-to-console
-        if (!sf_handler.IsInvalid)
-        {
-            CharInfo[] buf = new CharInfo[Width * Height];
-            Rect rect = new Rect() { Left = 0, Top = 0, Right = (short)Width, Bottom = (short)Height };
-
-            for (int i = 0; i < buf.Length; ++i)
-            {
-                buf[i].Attributes = (short)(Buffer[i].Color | (Buffer[i].BackgroundColor) ); //(short)(GlyphBuffer[x, y].fg |(GlyphBuffer[x,y].bg << 4) )
-                buf[i].Char.UnicodeChar = Buffer[i].Symbol;
-            }
-
-            bool b = WriteConsoleOutputW(sf_handler, buf,
-              new Coord() { X = (short)Width, Y = (short)Height },
-              new Coord() { X = 0, Y = 0 },
-              ref rect);
-        }
+        ConsoleBuffer.SetBuffer(Buffer);
+        ConsoleBuffer.Blit();
         // ende
     }
 
+    public static void Borderless() {
+		IsBorderless = true;
+
+		int GWL_STYLE = -16;                // hex konstant för stil-förändring
+		int WS_BORDERLESS = 0x00080000;     // helt borderless
+
+		Kernel32.Rect rect = new Kernel32.Rect();
+		Kernel32.Rect desktopRect = new Kernel32.Rect();
+
+		Kernel32.GetWindowRect(consoleHandle, ref rect);
+		IntPtr desktopHandle = Kernel32.GetDesktopWindow();
+		Kernel32.MapWindowPoints(desktopHandle, consoleHandle, ref rect, 2);
+		Kernel32.GetWindowRect(desktopHandle, ref desktopRect);
+
+		Point wPos = new Point(
+			(desktopRect.Right / 2) - ((WindowSize.X * FontSize.X) / 2),
+			(desktopRect.Bottom / 2) - ((WindowSize.Y * FontSize.Y) / 2));
+
+		Kernel32.SetWindowLong(consoleHandle, GWL_STYLE, WS_BORDERLESS);
+		Kernel32.SetWindowPos(consoleHandle, -2, wPos.X, wPos.Y, rect.Right - 8, rect.Bottom - 8, 0x0040);
+
+		Kernel32.DrawMenuBar(consoleHandle);
+	}
+
     public static Pixel? GetPixel(int y, int x) {
-        var formule = Width * y + x;
-        if (formule >= Width * Height) 
+        var formule = WindowSize.X * y + x;
+        if (formule >= WindowSize.X * WindowSize.Y) 
             return null;
 
         return Buffer[formule];
     }
 
     public static int GetPosition(int y, int x) {
-        return Width * y + x;
+        return WindowSize.X * y + x;
     }
 }
 
