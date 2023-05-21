@@ -28,7 +28,15 @@ public partial class Screen {
     private static EBackgroundFillMode wndBackFillMode;
     private static ERenderer rndMode;
     public static bool IsBorderless = false;
-
+    /// <summary>
+    /// Initialize engine screen
+    /// </summary>
+    /// <param name="_Width">horizontal size</param>
+    /// <param name="_Height">vertical size</param>
+    /// <param name="_fontWidth">font size</param>
+    /// <param name="_fontHeight">font size</param>
+    /// <param name="_title">Application name</param>
+    /// <param name="_rndMode">Render mode (NOT USED)</param>
     public static void Initialize(int _Width, int _Height, int _fontWidth, int _fontHeight, string _title = "ConsoleEngine", ERenderer _rndMode = ERenderer.DEFAULT) {
         if (_Width < 1 || _Height < 1) throw new ArgumentOutOfRangeException();
         if (_fontWidth < 1 || _fontHeight < 1) throw new ArgumentOutOfRangeException();
@@ -68,7 +76,9 @@ public partial class Screen {
 
         RestoreBuffer();
     }
-
+    /// <summary>
+    /// Clear screen (and Buffer)
+    /// </summary>
     public static void RestoreBuffer() {
         for(int y = 0; y < WindowSize.Y; y++) {
             for(int x = 0; x < WindowSize.X; x++) {
@@ -76,14 +86,19 @@ public partial class Screen {
             }
         }
     }
-
+    /// <summary>
+    /// Draw screen from Buffer
+    /// </summary>
     public static void Draw() {
         // https://stackoverflow.com/questions/2754518/how-can-i-write-fast-colored-output-to-console
         ConsoleBuffer.SetBuffer(Buffer);
         ConsoleBuffer.Blit();
         // ende
     }
-
+    /// <summary>
+    /// Set bordeless mode window
+    /// (CAUTION): Not completed
+    /// </summary>
     public static void Borderless() {
 		IsBorderless = true;
 
@@ -107,7 +122,12 @@ public partial class Screen {
 
 		Kernel32.DrawMenuBar(consoleHandle);
 	}
-
+    /// <summary>
+    /// Get pixel from screen
+    /// </summary>
+    /// <param name="y">vertical coord</param>
+    /// <param name="x">horizontal coord</param>
+    /// <returns></returns>
     public static Pixel? GetPixel(int y, int x) {
         var formule = WindowSize.X * y + x;
         if (formule >= WindowSize.X * WindowSize.Y) 
@@ -115,7 +135,12 @@ public partial class Screen {
 
         return Buffer[formule];
     }
-
+    /// <summary>
+    /// Convert point to linear position for buffer
+    /// </summary>
+    /// <param name="y">vertical</param>
+    /// <param name="x">horizontal</param>
+    /// <returns></returns>
     public static int GetPosition(int y, int x) {
         return WindowSize.X * y + x;
     }

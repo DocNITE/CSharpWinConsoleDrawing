@@ -2,10 +2,6 @@ using System.Runtime.InteropServices;
 
 namespace Engine;
 
-/// <summary>
-///  https://github.com/ollelogdahl/ConsoleGameEngine
-///  Thank you, you realy helped me!
-/// </summary>
 public class Pallete {
     public static int SetColor(int consoleColor, Color targetColor) {
 			return SetColor(consoleColor, targetColor.R, targetColor.G, targetColor.B);

@@ -14,6 +14,10 @@ public class Buffer {
         buffer = new CharInfo[w * h];
         sf_handler = CreateFile("CONOUT$", 0x40000000, 2, IntPtr.Zero, FileMode.Open, 0, IntPtr.Zero);
     }
+    /// <summary>
+    /// Migrate screen buffer into char buffer for console drawing.
+    /// </summary>
+    /// <param name="Buffer"> screen buffer </param>
     public void SetBuffer(Pixel[] Buffer) {
         for (int i = 0; i < buffer.Length; ++i)
         {
@@ -21,6 +25,9 @@ public class Buffer {
             buffer[i].Char.UnicodeChar = Buffer[i].Symbol;
         }
     } 
+    /// <summary>
+    /// Update console screen
+    /// </summary>
     public void Blit() {
         if (!sf_handler.IsInvalid)
         {
