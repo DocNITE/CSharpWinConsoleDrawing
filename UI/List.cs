@@ -71,6 +71,16 @@ class ListView {
     public void Draw() {
         if (!visible) return;
 
+        if (focused != null)
+        {
+            if (Screen.GetKey(ConsoleKey.UpArrow))
+                ScrollUp();
+            else if (Screen.GetKey(ConsoleKey.DownArrow))
+                ScrollDown();
+            else if (Screen.GetKey(ConsoleKey.Enter))
+                focused.Click();   
+        }
+
         var _y = 0;
         foreach (var item in items)
         {
@@ -85,17 +95,17 @@ class ListView {
         }
     }
 
-    public void KeyPressed(ConsoleKey key) {
-        if (!visible) return;
-        if (focused == null) return;
-
-        if (key == ConsoleKey.UpArrow)
-            ScrollUp();
-        else if (key == ConsoleKey.DownArrow)
-            ScrollDown();
-        else if (key == ConsoleKey.Enter)
-            focused.Click();    
-    }
+    //public void KeyPressed(ConsoleKey key) {
+    //    if (!visible) return;
+    //    if (focused == null) return;
+//
+    //    if (key == ConsoleKey.UpArrow)
+    //        ScrollUp();
+    //    else if (key == ConsoleKey.DownArrow)
+    //        ScrollDown();
+    //    else if (key == ConsoleKey.Enter)
+    //        focused.Click();    
+    //}
 
     private void ScrollDown() {
         for(int i = 0; i < items.Count; i++) {
