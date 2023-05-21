@@ -18,7 +18,7 @@ public partial class Font {
 
 		// sätter font till Terminal (Raster)
 		if (sizeX < 4 || sizeY < 4) cfi.FaceName = "Consolas";
-		else cfi.FaceName = "Terminal";
+		else cfi.FaceName = "Terminal"; //Terminal
 
 		Kernel32.SetCurrentConsoleFontEx(h, false, ref cfi);
 		return 0;
