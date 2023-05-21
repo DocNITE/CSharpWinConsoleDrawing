@@ -13,8 +13,7 @@ App.Controller.Initialize();
 // Main loop
 while (true) {
     // Application logic
-    App.Controller.Update();
-    App.Controller.Render();
+    App.Controller.Process();
     // Rendering
     Engine.Screen.Draw();
     Engine.Screen.RestoreBuffer();

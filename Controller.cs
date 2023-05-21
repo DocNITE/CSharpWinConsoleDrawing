@@ -12,9 +12,7 @@ public enum LifeStage: byte {
 
 public class IControllerMethods {
     public static void Initialize() {}
-    public static void Update() {}
-    public static void Render() {}
-    public static void KeyHandle(ConsoleKeyInfo input) {}
+    public static void Process() {}
     public static void Dispose() {}
 }
 
@@ -45,11 +43,8 @@ public partial class Controller {
         Scene.Initialize(); // Why not?
     }
      // Main game process - physics, movement and some.
-    public new static void Update() {
+    public new static void Process() {
         Scene?.Update();
-    }
-     // Main renderer method for drawing screen buffer
-    public new static void Render() {
         Scene?.Render();
     }
      // Input listeneer
