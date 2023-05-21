@@ -14,7 +14,7 @@ public partial class Screen {
     public static string Title {get => Console.Title; set => Console.Title = value;}
     public static int Width {get; internal set;}
     public static int Height {get; internal set;}
-    public static Pixel[,] Buffer {get; internal set;}
+    public static Pixel[] Buffer {get; internal set;}
     public static ConsoleColor BackSymbolColor;
     public static ConsoleColor BackgroundColor;
     public static ConsoleColor WindowColor;
@@ -26,7 +26,7 @@ public partial class Screen {
     public static void Initialize(int _Width, int _Height, string _title = "ConsoleEngine", ERenderer _rndMode = ERenderer.DEFAULT) {
         Width = _Width;
         Height = _Height;
-        Buffer = new Pixel[Height, Width];
+        Buffer = new Pixel[Height * Width];
         BackSymbolColor = ConsoleColor.White;
         BackgroundColor = ConsoleColor.Black;
         WindowColor = ConsoleColor.White;
@@ -55,38 +55,83 @@ public partial class Screen {
                 //} else {
                 //    Buffer[y,x] = new Pixel(emptySymbol, BackSymbolColor, BackgroundColor);
                 //}
-                Buffer[y,x] = new Pixel(emptySymbol, BackSymbolColor, BackgroundColor);
+                Buffer[GetPosition(y, x)] = new Pixel(emptySymbol, BackSymbolColor, BackgroundColor);
             }
         }
     }
 
     public static void Draw() {
-        Console.SetCursorPosition(0,0);
+        //Console.SetCursorPosition(0,0);
+//
+        //if (rndMode == ERenderer.DEFAULT) {
+        //    string symbols = "";
+        //    for(int y = 0; y < Height; y++) {
+        //        for(int x = 0; x < Width; x++) {
+        //            symbols = symbols + Buffer[y, x].Symbol;
+        //        }
+        //        
+        //        symbols = symbols + "\n";
+        //    }
+        //    Console.Write(symbols);
+        //} else if (rndMode == ERenderer.ColorFUL) {
+        //    for(int y = 0; y < Height; y++) {
+        //        for(int x = 0; x < Width; x++) {
+        //            Console.BackgroundColor = Buffer[y, x].BackgroundColor;
+        //            Console.ForegroundColor = Buffer[y, x].Color;
+        //            Console.Write(Buffer[y, x].Symbol);
+        //        }
+        //        
+        //        if (wndBackFillMode == EBackgroundFillMode.NONE)
+        //            Console.BackgroundColor = ConsoleColor.Black; 
+        //        
+        //        Console.Write("\n");
+        //    }
+        //}
 
-        if (rndMode == ERenderer.DEFAULT) {
-            string symbols = "";
-            for(int y = 0; y < Height; y++) {
-                for(int x = 0; x < Width; x++) {
-                    symbols = symbols + Buffer[y, x].Symbol;
-                }
-                
-                symbols = symbols + "\n";
+        if (!sf_handler.IsInvalid)
+        {
+            CharInfo[] buf = new CharInfo[Width * Height];
+            SmallRect rect = new SmallRect() { Left = 0, Top = 0, Right = (short)Width, Bottom = (short)Height };
+
+            for (int i = 0; i < buf.Length; ++i)
+            {
+                buf[i].Attributes = 4;
+                buf[i].Char.UnicodeChar = Buffer[i].Symbol;
             }
-            Console.Write(symbols);
-        } else if (rndMode == ERenderer.ColorFUL) {
-            for(int y = 0; y < Height; y++) {
-                for(int x = 0; x < Width; x++) {
-                    Console.BackgroundColor = Buffer[y, x].BackgroundColor;
-                    Console.ForegroundColor = Buffer[y, x].Color;
-                    Console.Write(Buffer[y, x].Symbol);
-                }
-                
-                if (wndBackFillMode == EBackgroundFillMode.NONE)
-                    Console.BackgroundColor = ConsoleColor.Black; 
-                
-                Console.Write("\n");
-            }
+
+            bool b = WriteConsoleOutputW(sf_handler, buf,
+              new Coord() { X = (short)Width, Y = (short)Height },
+              new Coord() { X = 0, Y = 0 },
+              ref rect);
+            //for (ushort character = 0x2551; character < 0x2551 + 26; ++character)
+            //{
+            //    for (short attribute = 0; attribute < 15; ++attribute)
+            //    {
+            //        for (int i = 0; i < buf.Length; ++i)
+            //        {
+            //            buf[i].Attributes = attribute;
+            //            buf[i].Char.UnicodeChar = character;
+            //        }
+//
+            //        bool b = WriteConsoleOutputW(sf_handler, buf,
+            //          new Coord() { X = (short)Width, Y = (short)Height },
+            //          new Coord() { X = 0, Y = 0 },
+            //          ref rect);
+            //    }
+            //}
         }
+    }
+
+    public static Pixel? GetPixel(int y, int x) {
+        var formule = Width * y + x;
+        if (formule >= Width * Height) 
+            return null;
+
+        return Buffer[formule];
+    }
+
+    public static int GetPosition(int y, int x) {
+        return Width * y + x;
     }
 }
 

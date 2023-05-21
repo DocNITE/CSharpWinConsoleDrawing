@@ -30,7 +30,7 @@ public partial class Screen {
     public static void SetPixel(int y, int x, char symbol, 
                         ConsoleColor color = ConsoleColor.White, 
                         ConsoleColor backgroundColor = ConsoleColor.Black) {
-        Buffer[y,x] = new Pixel(symbol, color, backgroundColor);
+        Buffer[GetPosition(y, x)] = new Pixel(symbol, color, backgroundColor);
     }
     /// <summary>
     /// Drawing char symbol like screen pixel
@@ -39,7 +39,7 @@ public partial class Screen {
     /// <param name="x">Horizontal position</param>
     /// <param name="pixel">Pixel what be drawen</param>
     public static void SetPixel(int y, int x, Pixel pixel) {
-        Buffer[y,x] = pixel;
+        Buffer[GetPosition(y, x)] = pixel;
     }
 }
 
