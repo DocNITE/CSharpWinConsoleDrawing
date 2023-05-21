@@ -1,5 +1,3 @@
-using System.Drawing;
-
 namespace Engine;
 
 public enum EBackgroundFillMode {
