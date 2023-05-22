@@ -89,7 +89,6 @@ public partial class Screen {
     /// </summary>
     public static void Draw() {
         // https://stackoverflow.com/questions/2754518/how-can-i-write-fast-colored-output-to-console
-        SetText(0,0, "Hello buddy? Yoo how are you? === +++ ### 🎔🎔🎔", ConsoleColor.DarkMagenta);
         ConsoleBuffer.SetBuffer(Buffer);
         ConsoleBuffer.Blit();
         // ende

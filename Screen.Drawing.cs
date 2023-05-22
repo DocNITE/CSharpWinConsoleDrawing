@@ -161,10 +161,10 @@ public partial class Screen {
 public struct Texture {
     public int Width {get;}
     public int Height {get;}
-    public Pixel[,] Buffer {get;}
+    public Pixel[] Buffer {get;}
 
     public Texture(int _height, int _width) {
-        Buffer = new Pixel[_height, _width];
+        Buffer = new Pixel[_height * _width];
         Width = _width;
         Height = _height;
     }
