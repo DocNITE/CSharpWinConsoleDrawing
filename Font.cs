@@ -20,7 +20,7 @@ public partial class Font {
 			cfi.FaceName = font;
 		} else {
 			if (sizeX < 4 || sizeY < 4) cfi.FaceName = "Consolas";
-			else cfi.FaceName = "Terminal"; // Terminal | Lucida Console
+			else cfi.FaceName = "Terminal"; // Terminal | Lucida Console | Mono-spaced
 		}
 
 		Kernel32.SetCurrentConsoleFontEx(h, false, ref cfi);
