@@ -35,7 +35,7 @@ public partial class Screen {
     /// <param name="_fontHeight">font size</param>
     /// <param name="_title">Application name</param>
     /// <param name="_rndMode">Render mode (NOT USED)</param>
-    public static void Initialize(int _Width, int _Height, int _fontWidth, int _fontHeight, string _title = "ConsoleEngine", ERenderer _rndMode = ERenderer.DEFAULT) {
+    public static void Initialize(int _Width, int _Height, int _fontWidth, int _fontHeight, string? fontName = null, string _title = "ConsoleEngine", ERenderer _rndMode = ERenderer.DEFAULT) {
         if (_Width < 1 || _Height < 1) throw new ArgumentOutOfRangeException();
         if (_fontWidth < 1 || _fontHeight < 1) throw new ArgumentOutOfRangeException();
 
@@ -70,7 +70,7 @@ public partial class Screen {
 
         ConsoleBuffer = new Buffer(WindowSize.X, WindowSize.Y);
         Kernel32.SetConsoleMode(Input.stdInputHandle, 0x0080);
-		Font.SetFont(Input.stdOutputHandle, (short)FontSize.X, (short)FontSize.Y);
+		Font.SetFont(Input.stdOutputHandle, (short)FontSize.X, (short)FontSize.Y, fontName);
 
         RestoreBuffer();
     }
@@ -89,6 +89,7 @@ public partial class Screen {
     /// </summary>
     public static void Draw() {
         // https://stackoverflow.com/questions/2754518/how-can-i-write-fast-colored-output-to-console
+        SetText(0,0, "Hello buddy? Yoo how are you? === +++ ### 🎔🎔🎔", ConsoleColor.DarkMagenta);
         ConsoleBuffer.SetBuffer(Buffer);
         ConsoleBuffer.Blit();
         // ende
@@ -145,16 +146,16 @@ public partial class Screen {
 }
 
 public struct Pixel {
-    public char Symbol;
+    public char Char;
     public ConsoleColor Color;
     public ConsoleColor BackgroundColor;
 
     public Pixel(
-                    char _symbol, 
+                    char _char, 
                     ConsoleColor _Color = ConsoleColor.White, 
                     ConsoleColor _bColor = ConsoleColor.Black) 
     {
-        Symbol = _symbol;
+        Char = _char;
         Color = _Color;
         BackgroundColor = _bColor;
     }

@@ -22,7 +22,7 @@ public class Buffer {
         for (int i = 0; i < buffer.Length; ++i)
         {
             buffer[i].Attributes = (short)(Buffer[i].Color | (Buffer[i].BackgroundColor));
-            buffer[i].Char.UnicodeChar = Buffer[i].Symbol;
+            buffer[i].Char.UnicodeChar = Buffer[i].Char;
         }
     } 
     /// <summary>

@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 namespace Engine;
 
 public partial class Font {
-    internal static int SetFont(IntPtr h, short sizeX, short sizeY) {
+    internal static int SetFont(IntPtr h, short sizeX, short sizeY, string? font = null) {
 		if (h == new IntPtr(-1)) {
 			return Marshal.GetLastWin32Error();
 		}
@@ -16,9 +16,12 @@ public partial class Font {
 		cfi.dwFontSize.X = sizeX;
 		cfi.dwFontSize.Y = sizeY;
 
-		// sätter font till Terminal (Raster)
-		if (sizeX < 4 || sizeY < 4) cfi.FaceName = "Consolas";
-		else cfi.FaceName = "Terminal"; //Terminal
+		if (font != null) {
+			cfi.FaceName = font;
+		} else {
+			if (sizeX < 4 || sizeY < 4) cfi.FaceName = "Consolas";
+			else cfi.FaceName = "Terminal"; // Terminal | Lucida Console
+		}
 
 		Kernel32.SetCurrentConsoleFontEx(h, false, ref cfi);
 		return 0;
