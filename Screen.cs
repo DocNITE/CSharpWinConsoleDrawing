@@ -11,6 +11,8 @@ public enum ERenderer {
 }
 
 public partial class Screen {
+    public static readonly Point DEFAULT_FONT_SIZE = new Point(14, 18);
+
     private static readonly IntPtr consoleHandle = Kernel32.GetConsoleWindow();
 
     public static string Title {get => Console.Title; set => Console.Title = value;}
@@ -35,7 +37,7 @@ public partial class Screen {
     /// <param name="_fontHeight">font size</param>
     /// <param name="_title">Application name</param>
     /// <param name="_rndMode">Render mode (NOT USED)</param>
-    public static void Initialize(int _Width, int _Height, int _fontWidth, int _fontHeight, string? fontName = null, string _title = "ConsoleEngine", ERenderer _rndMode = ERenderer.DEFAULT) {
+    public static void Initialize(int _Width = 160, int _Height = 40, int _fontWidth = 14, int _fontHeight = 18, string? fontName = null, string _title = "ConsoleEngine", ERenderer _rndMode = ERenderer.DEFAULT) {
         if (_Width < 1 || _Height < 1) throw new ArgumentOutOfRangeException();
         if (_fontWidth < 1 || _fontHeight < 1) throw new ArgumentOutOfRangeException();
 

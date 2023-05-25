@@ -1,7 +1,6 @@
 using System;
-using Engine;
 
-namespace App;
+namespace Engine;
 
 public enum LifeStage: byte {
     Start,
@@ -10,50 +9,37 @@ public enum LifeStage: byte {
     Exit
 }
 
-public class IControllerMethods {
-    public static void Initialize() {}
-    public static void Process() {}
-    public static void Dispose() {}
+public interface IApplication {
+    public void Initialize() {}
+    public void Process() {}
+    public void Dispose() {}
 }
 
-// Main game loop controller
-public partial class Controller : IControllerMethods {
+// Main app loop controller
+public partial class Application : IApplication {
 
-    public static LifeStage LifeStage = LifeStage.Start;
+    public LifeStage LifeStage = LifeStage.Start;
 
-    // So, when you import submodule in your project, next -
-    // you need to implement second code into your app entry point file 
-}
-
-/* Controller.EntryPoint.cs
-
-using System;
-using Engine;
-using App.Scenes;
-using App.Resources;
-
-namespace App;
-
-public partial class Controller {
-    public static Scene? Scene;
-        
-    public new static void Initialize() {
-        // test
-        Scene = new SceneRenderingTest();
-        Scene.Initialize(); // Why not?
-    }
-     // Main game process - physics, movement and some.
-    public new static void Process() {
-        Scene?.Update();
-        Scene?.Render();
-    }
-     // Input listeneer
-    public new static void KeyHandle(ConsoleKeyInfo input) {
-        Scene?.KeyHandle(input);
-        
-        if (input.Key == ConsoleKey.Escape) {
-            LifeStage = LifeStage.Exit;
+    public Application(Point ScreenSize, Point FontSize, string? Font = null) {
+        // Initialize screen
+        Screen.Initialize(ScreenSize.X, ScreenSize.Y, FontSize.X, FontSize.Y, Font);
+        // Initialize programm
+        this.Initialize();
+        // Main loop
+        while (true) {
+            // Application logic
+            this.Process();
+            // Rendering
+            Screen.Draw();
+            Screen.RestoreBuffer();
+            // Check if we wanna exit from programm
+            if (LifeStage == LifeStage.Exit) {
+                break;
+            }
         }
     }
+
+    public virtual void Initialize() {}
+    public virtual void Process() {}
+    public virtual void Dispose() { LifeStage = LifeStage.Exit; }
 }
-*/
