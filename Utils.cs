@@ -25,4 +25,12 @@ public partial class Utility {
         }
         return null;
     }
+
+    public static int GetPosition(Texture tex, int y, int x) {
+        return tex.Width * y + x;
+    }
+
+    public static int GetPosition(int Width, int y, int x) {
+        return Width * y + x;
+    }
 }

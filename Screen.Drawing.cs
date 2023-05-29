@@ -50,6 +50,18 @@ public partial class Screen {
         Buffer[GetPosition(y, x)] = pixel;
     }
 
+	public static void SetTexture(int y, int x, Texture tex) {
+		if (y >= WindowSize.Y || x >= WindowSize.X || y < 0 || x < 0) 
+            return;
+
+		for (int xi = 0; xi < tex.Width; xi ++) {
+			for (int yi = 0; yi < tex.Height; yi ++) {
+				Pixel texPixel = tex.Buffer[Utility.GetPosition(tex, yi, xi)];
+				Buffer[GetPosition(y+yi, x+xi)] = texPixel;
+			}
+		}
+	}
+
     public static void Triangle(Point a, Point b, Point c, int color, char character = 'X') {
 		Triangle(a,b,c,color,0,character);
 	}
@@ -170,6 +182,31 @@ public struct Texture {
         Width = _width;
         Height = _height;
     }
+	public Texture(int _height, int _width, string texinfo) {
+        Buffer = new Pixel[_height * _width];
+        Width = _width;
+        Height = _height;
+
+		SetTexture(texinfo);
+    }
+
+	public void SetTexture(string texinfo) {
+		for (int xi = 0; xi < Width; xi ++) {
+			for (int yi = 0; yi < Height; yi ++) {
+				Pixel texPixel = new Pixel(texinfo[Utility.GetPosition(this, yi, xi)]);
+				Buffer[Utility.GetPosition(this, yi, xi)] = texPixel;
+			}
+		}
+	}
+	// TODO: Refactor and make better way to make color 
+	public void SetColor(ConsoleColor color = ConsoleColor.White, ConsoleColor background = ConsoleColor.Black) {
+		for (int xi = 0; xi < Width; xi ++) {
+			for (int yi = 0; yi < Height; yi ++) {
+				Buffer[Utility.GetPosition(this, yi, xi)].Color = color;
+				Buffer[Utility.GetPosition(this, yi, xi)].BackgroundColor = background;
+			}
+		}
+	}
 }
 
 public class Color {
