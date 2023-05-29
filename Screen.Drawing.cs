@@ -51,13 +51,14 @@ public partial class Screen {
     }
 
 	public static void SetTexture(int y, int x, Texture tex) {
-		if (y >= WindowSize.Y || x >= WindowSize.X || y < 0 || x < 0) 
-            return;
-
 		for (int xi = 0; xi < tex.Width; xi ++) {
 			for (int yi = 0; yi < tex.Height; yi ++) {
 				Pixel texPixel = tex.Buffer[Utility.GetPosition(tex, yi, xi)];
-				Buffer[GetPosition(y+yi, x+xi)] = texPixel;
+				try {
+					SetPixel(y+yi, x+xi, texPixel);
+				} catch {
+					//nothing...
+				}
 			}
 		}
 	}
